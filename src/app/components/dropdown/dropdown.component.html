@@ -1,0 +1,26 @@
+<neutron-button id="anchor" (click)="handleClick()">
+	<span *ngIf='button.start' slot="start">{{button.start}}</span>
+	{{button.content}}
+	<span *ngIf='button.end' slot="end">{{button.end}}</span>
+</neutron-button>
+<neutron-anchored-region
+	*ngIf="visible"
+	anchor="anchor"
+	fixed-placement="true"
+	vertical-positioning-mode="locktodefault"
+	vertical-default-position="bottom"
+	vertical-scaling="content"
+	horizontal-positioning-mode="locktodefault"
+	horizontal-default-position="left"
+	horizontal-scaling="anchor"
+	horizontal-inset="true"
+	auto-update-mode="auto"
+>
+	<neutron-menu>
+		<neutron-menu-item *ngFor='let item of menuItems | async'>
+			<span *ngIf='item.start' slot="start">{{item.start}}</span>
+			{{item.content}}
+			<span *ngIf='item.end' slot="end">{{item.end}}</span>
+		</neutron-menu-item>
+	</neutron-menu>
+</neutron-anchored-region>

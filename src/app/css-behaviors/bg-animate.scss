@@ -1,0 +1,18 @@
+@mixin keyframes($name) {
+	@keyframes #{$name} {
+		@content
+	}
+}
+
+@mixin animate($animation, $duration, $method, $times) {
+	animation: $animation $duration $method $times;
+}
+
+@mixin bg-position-animate($duration: 30s) {
+	@include keyframes(position-shift) {
+		0%{background-position:0% 34%}
+		50%{background-position:100% 67%}
+		100%{background-position:0% 34%}
+	}
+	@include animate(position-shift, $duration, ease, infinite);
+}

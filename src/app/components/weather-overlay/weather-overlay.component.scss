@@ -1,0 +1,28 @@
+:host {
+	canvas {
+		position: absolute;
+		z-index: -1;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+	}
+
+	[state="sunrise"] {
+		background: -webkit-linear-gradient(180deg, #82a0bc 0%, #aebebe 50%, #e0ceb0 80%, #ffc19c 100%);
+		background: linear-gradient(180deg, #82a0bc 0%, #aebebe 50%, #e0ceb0 80%, #ffc19c 100%);
+	}
+
+	[state="day"] {
+		background: linear-gradient(#90dffe 0%, #38a3d1 100%);
+	}
+
+	[state="sunset"] {
+		background: -webkit-linear-gradient(0deg, #f76b1c 0%, #aa3CAC 15%, #784BA0 35%, #212e3f 100%);
+		background: linear-gradient(0deg, #f76b1c 0%, #aa3CAC 15%, #784BA0 35%, #212e3f 100%);
+	}
+
+	[state="night"] {
+		background: linear-gradient(#140d15 0%, #212e3f 100%);
+	}
+}

@@ -1,0 +1,211 @@
+@import
+'../../css-behaviors/bg-gradient.scss',
+'../../css-behaviors/bg-acrylic.scss',
+'../../css-behaviors/utils.scss',
+'../../css-behaviors/breakpoints.scss';
+
+.card {
+	--elevation: 4;
+	display: block;
+	height: var(--card-height, 100%);
+	width: var(--card-width, 100%);
+	box-sizing: border-box;
+	background: var(--neutral-layer-card-container);
+	border-radius: calc(var(--control-corner-radius) * 1px);
+	box-shadow: 0 0 calc((var(--elevation) * 0.225px) + 2px) rgba(0, 0, 0, calc(.11 * (2 - var(--background-luminance, 1)))), 0 calc(var(--elevation) * 0.4px) calc((var(--elevation) * 0.9px)) rgba(0, 0, 0, calc(.13 * (2 - var(--background-luminance, 1))));
+}
+
+.location-card {
+	--elevation: 11;
+	margin-top: 3rem;
+	contain: layout;
+	display: flex;
+	flex-direction: column;
+	min-width: max-content;
+	width: auto;
+	max-width: var(--card-max-width);
+	position: relative;
+	height: var(--card-height);
+	padding: 0 1rem 1rem 1rem;
+	gap: 1rem;
+
+	@supports(not(gap: 1rem)) {
+		.main-content-container {
+			margin-bottom: 1rem;
+		}
+
+		.detail-drawer {
+			margin-top: 1rem;
+		}
+	}
+
+	.main-content-container {
+		@include bg-acrylic();
+		// Safari hurts me
+		@supports(not(contain: content)) {
+			overflow: hidden;
+		}
+		--elevation: 8;
+		position: relative;
+		margin-top: -2.5rem;
+		height: calc(100% + 2.5rem);
+		background-color: var(--fill-color);
+		flex-grow: 2.5;
+
+		transition-property: flex-grow, height;
+		transition-duration: 0.3s;
+		transition-timing-function: cubic-bezier(0.87, 0, 0.13, 1);
+		&[collapsed] {
+			height: calc(35% + 2.5rem);
+			min-height: fit-content;
+			flex-grow: unset;
+
+			.main-content {
+				// grid-template-areas:
+				// 'icon'
+				// 'location';
+
+				.temp-text, .condition-text {
+					opacity: 0;
+				}
+			}
+		}
+
+		.main-content {
+			position: relative;
+			display: grid;
+			height: 100%;
+			width: 100%;
+			grid-template-areas:
+				'icon'
+				'location'
+				'temp'
+				'condition';
+			align-items: center;
+			justify-content: center;
+			grid-auto-rows: max-content;
+
+			.temp-text, .condition-text {
+				transition-property: opacity, grid-template-areas;
+				transition-duration: 0.4s;
+				transition-timing-function: ease-in-out;
+			}
+			
+			.condition-icon {
+				grid-area: icon;
+				justify-self: center;
+			}
+			
+			.location-name {
+				grid-area: location;
+				justify-self: center;
+				align-self: center;
+				font-size: var(--type-ramp-plus-2-font-size);
+				line-height: var(--type-ramp-plus-2-line-height);
+			}
+
+			.temp-text {
+				grid-area: temp;
+				justify-self: center;
+				align-self: center;
+				display: grid;
+				grid-template-areas: 'maintemp auxtemp';
+				grid-template-columns: auto 1fr;
+
+				font-size: var(--type-ramp-plus-6-font-size);
+				line-height: var(--type-ramp-plus-6-line-height);
+
+				.temp {
+					
+				}
+
+				.main-temp {
+					grid-area: maintemp;
+
+					.main-temp-unit {
+						display: none;
+					}
+				}
+
+				:not(.main-temp) {
+					grid-area: auxtemp;
+					justify-self: start;
+					align-self: center;
+					margin-top: -5px;
+					font-size: var(--type-ramp-minus-1-font-size);
+					line-height: var(--type-ramp-minus-1-line-height);
+
+					neutron-divider {
+						border-color: var(--neutral-foreground-rest);
+						margin-top: -2px;
+						margin-bottom: -1px;
+					}
+
+					.main-temp-unit {
+						display: block;
+						font-size: var(--type-ramp-plus-2-font-size);
+						line-height: var(--type-ramp-plus-2-line-height);
+					}
+				}
+			}
+
+			.condition-text {
+				grid-area: condition;
+				justify-self: center;
+				align-self: flex-start;
+			}
+		}
+	}
+
+	.detail-drawer {
+		@include hide-scrollbar();
+		overflow-y: auto;
+		position: relative;
+		background-color: var(--neutral-layer-floating);
+		transition-property: flex-grow, height;
+		transition-duration: 0.3s;
+		transition-timing-function: cubic-bezier(0.87, 0, 0.13, 1);
+		height: calc((var(--height-number) + 2) * 1px);
+		flex-grow: 2.5;
+
+		.drawer-header {
+			background-color: var(--neutral-layer-floating);
+			z-index: 3;
+			position: sticky;
+			top: 0;
+			display: grid;
+			box-sizing: border-box;
+			height: calc(var(--height-number) * 1px);
+			grid-template-columns: minmax(42px, auto) minmax(42px, auto);
+			grid-template-rows: auto;
+			justify-items: center;
+			align-items: center;
+			padding: 0;
+			margin-bottom: calc(var(--design-unit) * 1px);
+			white-space: nowrap;
+			color: var(--neutral-foreground-rest);
+			fill: currentcolor;
+			cursor: pointer;
+			border-top-left-radius: calc(var(--control-corner-radius) * 1px);
+			border-top-right-radius: calc(var(--control-corner-radius) * 1px);
+			border: calc(var(--focus-stroke-width) * 1px) solid transparent;
+			border-bottom: calc(var(--focus-stroke-width) * 1px) solid var(--neutral-stroke-divider-rest);
+		}
+
+		.drawer-menu {
+			box-shadow: unset;
+			background-color: transparent;
+			border: unset
+		}
+
+		&[collapsed] {
+			overflow: hidden;
+			flex-grow: unset;
+
+			.drawer-header {
+				border-radius: calc(var(--control-corner-radius) * 1px);
+				border-bottom-color: transparent;
+			}
+		}
+	}
+}

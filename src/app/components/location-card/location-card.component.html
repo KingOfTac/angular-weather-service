@@ -1,0 +1,42 @@
+<div class="card location-card">
+	<neutron-card #contentContainer class="main-content-container">
+		<weather-overlay timeOfDay="sunrise">
+			<div class="main-content">
+				<div class="location-name">
+					{{location.name}}
+				</div>
+				<div class="condition-icon">
+					<app-icon name="weather.{{current.condition.code}}.{{current.is_day === 1 ? 'day' : 'night'}}.icon" size="hero"></app-icon>
+				</div>
+				<div class="temp-text">
+					<span class="temp main-temp">
+						<div class="main-temp-unit">&#176;C</div>
+						{{current.temp_f}}
+					</span>
+					<span class="temp">
+						<div class="main-temp-unit">&#176;F</div>
+						<neutron-divider></neutron-divider>
+						{{current.temp_c}}<sup style="font-size: 0.65em">&#176;C</sup>
+					</span>
+				</div>
+				<div class="condition-text">
+					{{current.condition.text}}
+				</div>
+			</div>
+			<div class="detail-content">
+				
+			</div>
+		</weather-overlay>
+	</neutron-card>
+	<neutron-card #drawerContainer class="detail-drawer" collapsed>
+		<div class="drawer-header" (click)="toggleMenu($event)">
+			<span>Location Settings</span>
+			<app-icon name="app.settings.regular" size="plus-2"></app-icon>
+		</div>
+		<neutron-menu class="drawer-menu">
+			<neutron-menu-item role="menuitemcheckbox" *ngFor='let setting of settings'>
+				{{setting.text}}
+			</neutron-menu-item>
+		</neutron-menu>
+	</neutron-card>
+</div>

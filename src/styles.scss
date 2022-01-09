@@ -1,1 +1,39 @@
 /* You can add global styles to this file, and also import other style files */
+@import
+	'./app/css-behaviors/reset.scss',
+	'./app/css-behaviors/breakpoints.scss';
+
+@font-face {
+	font-family: "Rubik", sans-serif;
+	src: url("assets/fonts/Rubik-Light.ttf");
+}
+@font-face {
+	font-family: "Rubik";
+	src: url("assets/fonts/Rubik-VariableFont_wght.ttf") format("woff2-variations");
+}
+
+:root {
+	@include media-breakpoint-down(sm) {
+		--card-max-width: 100% !important;
+		--card-height: 80% !important;
+		--type-ramp-multiplier: 1.5 !important;
+		--base-height-multiplier: 11 !important;
+		--icon-height-multiplier: 1.5 !important;
+		--design-unit: 4.2 !important;
+		--density: 2 !important;
+	}
+}
+
+html {
+	font-size: var(--type-ramp-base-font-size);
+	line-height: var(--type-ramp-base-line-height);
+}
+
+html, body, * {
+	font-family: var(--body-font);
+	color: var(--neutral-foreground-rest);
+}
+
+body {
+	background-color: var(--fill-color);
+}

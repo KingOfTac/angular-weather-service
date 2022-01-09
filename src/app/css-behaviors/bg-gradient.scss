@@ -1,0 +1,12 @@
+@mixin bg-gradient(
+	$rotation,
+	$colorStop1,
+	$colorStop2,
+	$backgroundSize: 300% 300%,
+	$backgroundPosition: 0% 0%
+) {
+	background: linear-gradient($rotation, $colorStop1, $colorStop2);
+	background-size: $backgroundSize;
+	background-position: $backgroundPosition;
+	repeat: no-repeat;
+}
