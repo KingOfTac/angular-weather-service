@@ -1,28 +1,26 @@
-import { Injectable } from "@angular/core";
 import { HttpClient } from '@angular/common/http';
 import { Observable } from "rxjs";
-import { isNull } from "@angular/compiler/src/output/output_ast";
 
-interface QueryParams {
+export interface QueryParams {
 	[key: string]: string | number;
 }
 
-@Injectable({
-	providedIn: 'root'
-})
+export type HttpMethod = 'get' | 'post' | 'delete' | 'patch';
+
+/**
+ * A resuable http service class in case I need to implement other features in the future
+ */
 export class HttpServiceBaseLayer {
 	private END_POINT: string;
+	http: HttpClient
 
-	constructor(private readonly http: HttpClient) {
-	}
-
-	public set endpoint(endpoint: string) {
+	constructor(endpoint: string) {
 		this.END_POINT = endpoint;
 	}
 
 	public request<T>(
 		id: number | null = null,
-		data: any,
+		data: any = {},
 		route: string,
 		query: QueryParams | null,
 		method: 'get' | 'post' | 'delete' | 'patch'

@@ -14,12 +14,12 @@
 
 :root {
 	@include media-breakpoint-down(sm) {
-		--card-max-width: 100% !important;
-		--card-height: 80% !important;
-		--type-ramp-multiplier: 1.5 !important;
-		--base-height-multiplier: 11 !important;
-		--icon-height-multiplier: 1.5 !important;
-		--design-unit: 4.2 !important;
+		--card-max-width: 250px !important;
+		--card-height: 450px !important;
+		--type-ramp-multiplier: 1 !important;
+		--base-height-multiplier: 10 !important;
+		--icon-height-multiplier: 1.1 !important;
+		--design-unit: 4 !important;
 		--density: 2 !important;
 	}
 }
@@ -31,9 +31,12 @@ html {
 
 html, body, * {
 	font-family: var(--body-font);
-	color: var(--neutral-foreground-rest);
 }
 
 body {
 	background-color: var(--fill-color);
+}
+
+neutron-tooltip {
+	z-index: 10;
 }

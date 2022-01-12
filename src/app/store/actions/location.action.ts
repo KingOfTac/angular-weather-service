@@ -1,14 +1,17 @@
-import { Action } from "@ngrx/store";
-import { LocationItem } from "../models";
+import { createAction, props } from "@ngrx/store";
+import { LocationItem, Location } from "../models";
 
-export enum LocationActionType {
-	ADD_ITEM = '[LOCATION] Add Location'
-}
+export const addLocation = createAction(
+	'[Location List] Add Location Item',
+	props<LocationItem>()
+);
 
-export class AddItemAction implements Action {
-	readonly type = LocationActionType.ADD_ITEM;
+export const delLocation = createAction(
+	'[Location List] Del Location Item',
+	props<LocationItem>()
+);
 
-	constructor(public payload: LocationItem) {}
-}
-
-export type LocationAction = AddItemAction;
+export const retrievedLocationList = createAction(
+	'[Location List] Retrieve Locations Success',
+	props<{ locationItems: ReadonlyArray<LocationItem> }>()
+);

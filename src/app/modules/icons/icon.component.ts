@@ -48,7 +48,7 @@ export class Icons implements OnInit {
 				return '46px';
 			case 'plus-6':
 				return '60px';
-			case 'hero':
+			case 'huge':
 				return '120px';
 			default:
 				return '14px';

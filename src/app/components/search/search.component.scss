@@ -1,7 +1,25 @@
+@import
+'../../css-behaviors/utils.scss',
+'../../css-behaviors/breakpoints.scss';
+
 :host {
 	max-width: 100%;
 
 	neutron-text-field {
 		width: 100%;
+	}
+
+	.listbox-wrapper {
+		display: none;
+
+		&.visible {
+			display: block;
+		}
+
+		#results-list {
+			@include hide-scrollbar();
+			overflow-y: auto;
+			width: 100%;
+		}
 	}
 }

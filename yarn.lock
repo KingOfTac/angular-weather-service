@@ -1677,6 +1677,7 @@ __metadata:
     "@ngrx/component-store": ^13.0.2
     "@ngrx/store": ^13.0.2
     "@types/jasmine": ~3.10.0
+    "@types/luxon": ^2
     "@types/node": ^12.11.1
     jasmine-core: ~3.10.0
     karma: ~6.3.0
@@ -1684,6 +1685,7 @@ __metadata:
     karma-coverage: ~2.1.0
     karma-jasmine: ~4.0.0
     karma-jasmine-html-reporter: ~1.7.0
+    luxon: ^2.3.0
     rxjs: ~7.4.0
     tslib: ^2.3.0
     typescript: ~4.5.2
@@ -1973,6 +1975,13 @@ __metadata:
   version: 7.0.9
   resolution: "@types/json-schema@npm:7.0.9"
   checksum: 259d0e25f11a21ba5c708f7ea47196bd396e379fddb79c76f9f4f62c945879dc21657904914313ec2754e443c5018ea8372362f323f30e0792897fdb2098a705
+  languageName: node
+  linkType: hard
+
+"@types/luxon@npm:^2":
+  version: 2.0.9
+  resolution: "@types/luxon@npm:2.0.9"
+  checksum: 6c99741e1735aca5b784981ecec3a6ad9497b8e46cc3dd0ba625901bb5b34af4c7b1bf33e32b3e8468312ce2850b31f553f712283a8301a0ee1aacb633276738
   languageName: node
   linkType: hard
 
@@ -5421,6 +5430,13 @@ __metadata:
   dependencies:
     yallist: ^4.0.0
   checksum: f97f499f898f23e4585742138a22f22526254fdba6d75d41a1c2526b3b6cc5747ef59c5612ba7375f42aca4f8461950e925ba08c991ead0651b4918b7c978297
+  languageName: node
+  linkType: hard
+
+"luxon@npm:^2.3.0":
+  version: 2.3.0
+  resolution: "luxon@npm:2.3.0"
+  checksum: 3d00e1b812a31082cf0d97e844d7354c93891fbd14795756f396ee5656387e21d2c862edb841516114eb391f8314a6cf3848799acc6d59cf9560c88c909b91f0
   languageName: node
   linkType: hard
 

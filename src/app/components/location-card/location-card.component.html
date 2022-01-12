@@ -1,42 +1,77 @@
-<div class="card location-card">
-	<neutron-card #contentContainer class="main-content-container">
-		<weather-overlay timeOfDay="sunrise">
-			<div class="main-content">
-				<div class="location-name">
-					{{location.name}}
-				</div>
-				<div class="condition-icon">
-					<app-icon name="weather.{{current.condition.code}}.{{current.is_day === 1 ? 'day' : 'night'}}.icon" size="hero"></app-icon>
-				</div>
-				<div class="temp-text">
-					<span class="temp main-temp">
-						<div class="main-temp-unit">&#176;C</div>
-						{{current.temp_f}}
-					</span>
-					<span class="temp">
-						<div class="main-temp-unit">&#176;F</div>
-						<neutron-divider></neutron-divider>
-						{{current.temp_c}}<sup style="font-size: 0.65em">&#176;C</sup>
-					</span>
-				</div>
-				<div class="condition-text">
-					{{current.condition.text}}
-				</div>
+<neutron-card class="weather">
+	<weather-overlay [localTime]='location.localtime' [forecastDate]='forecast[0].date' [timezone]='location.tz_id'
+		[sunrise]='forecast[0].astro.sunrise' [sunset]='forecast[0].astro.sunset'>
+		<div class="content">
+			<div class="location-name">
+				<app-icon name="app.location.regular" size="plus-2"></app-icon>
+				{{location.name}}
 			</div>
-			<div class="detail-content">
-				
-			</div>
-		</weather-overlay>
-	</neutron-card>
-	<neutron-card #drawerContainer class="detail-drawer" collapsed>
-		<div class="drawer-header" (click)="toggleMenu($event)">
-			<span>Location Settings</span>
-			<app-icon name="app.settings.regular" size="plus-2"></app-icon>
+			<ng-container
+				*ngFor='let group of settings | filter:"area":"weather" | filter:"visible":true | group:"label"'>
+				<div *ngIf='group.value' class='main-group {{group.key.split(" ").join("-").toLowerCase()}}'>
+					<div *ngIf='group.value[0].displayLabelText' class='label'>
+						{{group.key}}
+					</div>
+					<div class="group-content">
+						<ng-container *ngFor='let setting of group.value'>
+							<weather-data
+								class='{{setting.classList?.join(" ")}}'
+								[visible]="setting.visible"
+								[value]="setting.value"
+								[valueType]="setting.valueType"
+								[displayLabel]="setting.displayLabel" 
+								[isDay]="current.is_day"
+								[dateFormat]="setting?.dateFormat">
+							</weather-data>
+						</ng-container>
+					</div>
+				</div>
+			</ng-container>
 		</div>
-		<neutron-menu class="drawer-menu">
-			<neutron-menu-item role="menuitemcheckbox" *ngFor='let setting of settings'>
-				{{setting.text}}
+	</weather-overlay>
+</neutron-card>
+<neutron-card #infoRef class="info">
+	<div class="content">
+		<ng-container *ngFor='let group of settings | filter:"area":"detail" | filter:"visible":true | group:"label"'>
+			<div *ngIf='group.value' class="detail-group {{group.key.split(' ').join('-').toLowerCase()}}">
+				<div class='label'>{{group.key}}</div>
+				<div class="group-content">
+					<ng-container *ngFor='let setting of group.value'>
+						<weather-data
+							class='{{setting.classList?.join(" ")}}'
+							[visible]="setting.visible"
+							[value]="setting.value"
+							[valueType]="setting.valueType"
+							[displayLabel]="setting.displayLabel" 
+							[isDay]="current.is_day"
+							[dateFormat]="setting?.dateFormat">
+						</weather-data>
+					</ng-container>
+				</div>
+			</div>
+		</ng-container>
+	</div>
+
+	<div class="toolbar">
+		<neutron-button id="menu-btn" (click)="toggleMenu($event)">
+			Location Settings
+			<app-icon slot="end" name="app.settings.regular" size="plus-2"></app-icon>
+		</neutron-button>
+		<neutron-button id="details-btn" appearance="outline" class="start" routerLink="/details" [state]='data'>Go to Details
+		</neutron-button>
+		<neutron-button id="del-btn" appearance="stealth" class="end" (click)='delete()'>
+			<app-icon name="app.trash.regular" size="plus-2"></app-icon>
+		</neutron-button>
+	</div>
+	<neutron-menu class="info-menu" #menuRef collapsed>
+		<ng-container *ngFor='let setting of settings'>
+			<neutron-menu-item (change)='toggleValue($event)' [checked]='setting.visible ? "" : undefined'
+				[attr.data-prop]='setting.prop' role="menuitemcheckbox">
+				{{setting.filterLabel}}
 			</neutron-menu-item>
-		</neutron-menu>
-	</neutron-card>
-</div>
+		</ng-container>
+	</neutron-menu>
+</neutron-card>
+<neutron-tooltip anchor="del-btn">Remove Item</neutron-tooltip>
+<neutron-tooltip anchor="details-btn">See more info on this location</neutron-tooltip>
+<neutron-tooltip anchor="menu-btn">Open data display menu</neutron-tooltip>

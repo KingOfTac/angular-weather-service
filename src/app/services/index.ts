@@ -1,1 +1,1 @@
-export * from './service-base-layer';
+export * from './locations.service'

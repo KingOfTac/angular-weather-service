@@ -1,18 +1,20 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
-import { HorizontalScroll } from '@microsoft/fast-foundation';
-import { AppState, LocationItem } from './store';
+import { Component, ElementRef, ViewChild } from "@angular/core";
+import { baseLayerLuminance, StandardLuminance } from "@microsoft/fast-components";
+import { HorizontalScroll } from "@microsoft/fast-foundation";
+import { Store } from "@ngrx/store";
+import { Observable } from "rxjs";
+import { AppState, LocationItem } from "src/app/store";
 
 @Component({
-	selector: 'app-root',
-	templateUrl: './app.component.html',
-	styleUrls: ['./app.component.scss']
+	selector: 'location-list',
+	templateUrl: './location-list.component.html',
+	styleUrls: ['./location-list.component.scss']
 })
-export class AppComponent implements OnInit {
+export class LocationListComponent {
 	public locations: Observable<Array<LocationItem>>;
 	public locationList: Observable<Array<LocationItem>>;
-	public layout: 'row' | 'grid';
+	public layout: 'row' | 'column';
+	public direction: 'asc' | 'desc' = 'desc';
 
 	public gridView: HTMLElement;
 	@ViewChild('gridView') set gridViewRef(content: ElementRef) {
@@ -39,7 +41,7 @@ export class AppComponent implements OnInit {
 		this.locations = this.store.select((store) => store.locationItems);
 		this.locationList = this.store.select((store) => store.locationList);
 
-		this.layout = 'grid';
+		this.layout = 'column';
 
 		if (window.matchMedia('(max-width: 768px)').matches) {
 			this.layout = 'row';
@@ -48,9 +50,15 @@ export class AppComponent implements OnInit {
 
 	toggleLayout() {
 		this.layout === 'row' ?
-			this.layout = 'grid' :
+			this.layout = 'column' :
 			this.layout = 'row';
 		
 		this.elementRef.nativeElement.setAttribute('layout', this.layout);
+	}
+
+	toggleDir() {
+		this.direction === 'asc' ?
+			this.direction = 'desc' :
+			this.direction = 'asc';
 	}
 }

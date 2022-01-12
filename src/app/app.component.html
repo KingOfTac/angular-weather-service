@@ -1,9 +1,1 @@
-<div class="app-toolbar">
-	<app-search></app-search>
-</div>
-
-
-<ng-container *ngFor='let item of (user$ | async).savedLocations'>
-	<location-card [id]='item.id' [nickname]='item.nickname' [location]='item.location' [current]='item.current'>
-	</location-card>
-</ng-container>
+<router-outlet></router-outlet>

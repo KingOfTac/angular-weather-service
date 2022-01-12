@@ -1,0 +1,77 @@
+<div class="app-toolbar">
+	<h1 class="page-title">{{data.location.name}}, {{data.location.region}}</h1>
+	<neutron-button class="back-button" routerLink="" (click)='null'>
+		<app-icon name="app.arrowBack.regular" size="plus-3"></app-icon>
+	</neutron-button>
+</div>
+<div class="content-wrapper">
+	<h2>Current Conditions</h2>
+	<location-card class="current" [data]='data' [disable-tools]="true"></location-card>
+	<h2>Three Day Forecast</h2>
+	<neutron-divider></neutron-divider>
+	<ng-container *ngFor='let day of data.forecast.forecastday' >
+		<h3>{{day.date | date}}</h3>
+		<div class="forecast">
+			<neutron-horizontal-scroll speed="800" class="hours">
+				<neutron-card *ngFor='let hour of day.hour' class="hour">
+					<weather-overlay
+					[localTime]='hour.time' [forecastDate]='day.date' [timezone]='data.location.tz_id'
+					[sunrise]='day.astro.sunrise' [sunset]='day.astro.sunset'
+					>
+						<div class="hour-weather">
+							<div class="hour-time">{{hour.time | date:'h:mm a'}}</div>
+							<weather-data
+								class='hour-condition'
+								[visible]="true"
+								[value]="hour.condition"
+								[valueType]="'condition'"
+								[displayLabel]="false" 
+								[isDay]="hour.is_day">
+							></weather-data>
+							<div class="hour-temp">
+								<weather-data
+									class='hour-temp-f'
+									[visible]="true"
+									[value]="hour.temp_f"
+									[valueType]="'°F'"
+									[displayLabel]="false" 
+									[isDay]="hour.is_day">
+								></weather-data>
+								<weather-data
+									class='hour-temp-c'
+									[visible]="true"
+									[value]="hour.temp_c"
+									[valueType]="'°C'"
+									[displayLabel]="false" 
+									[isDay]="hour.is_day">
+								></weather-data>
+							</div>
+							<div class="hour-rain">
+								<div>Chance of Rain</div>
+								<weather-data
+									class='hour-rain'
+									[visible]="true"
+									[value]="hour.chance_of_rain"
+									[valueType]="'%'"
+									[displayLabel]="false" 
+									[isDay]="hour.is_day">
+								></weather-data>
+							</div>
+							<div class="hour-snow">
+								<div>Chance of Snow</div>
+								<weather-data
+									class='hour-snow'
+									[visible]="true"
+									[value]="hour.chance_of_snow"
+									[valueType]="'%'"
+									[displayLabel]="false" 
+									[isDay]="hour.is_day">
+								></weather-data>
+							</div>
+						</div>
+					</weather-overlay>
+				</neutron-card>
+			</neutron-horizontal-scroll>
+		</div>
+	</ng-container>
+</div>

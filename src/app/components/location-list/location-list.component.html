@@ -1,0 +1,31 @@
+<div class="app-toolbar">
+	<app-search></app-search>
+	<neutron-toolbar>
+		<neutron-button id="layout-btn" class="view-toggle" (click)='toggleLayout()'>
+			<app-icon *ngIf='layout === "row"' name="app.row.regular" size="plus-3"></app-icon>
+			<app-icon *ngIf='layout === "column"' name="app.column.regular" size="plus-3"></app-icon>
+		</neutron-button>
+		<neutron-button id="dir-btn" class="dir-toggle" (click)='toggleDir()'>
+			<app-icon *ngIf='direction === "asc"' name="app.sortAsc.regular" size="plus-3"></app-icon>
+			<app-icon *ngIf='direction === "desc"' name="app.sortDesc.regular" size="plus-3"></app-icon>
+		</neutron-button>
+	</neutron-toolbar>
+</div>
+<neutron-tooltip anchor="layout-btn">Switch Layout</neutron-tooltip>
+
+<div #gridView *ngIf='layout === "column"' class="location-column-list">
+	<ng-container *ngFor='let item of locationList | async | sort:direction'>
+		<location-card [data]='item'></location-card>
+	</ng-container>
+</div>
+
+<neutron-horizontal-scroll
+	#rowView
+	*ngIf='layout === "row"'
+	speed="800"
+	class="location-row-list"
+>
+	<ng-container *ngFor='let item of locationList | async | sort:direction'>
+		<location-card [data]='item'></location-card>
+	</ng-container>
+</neutron-horizontal-scroll>

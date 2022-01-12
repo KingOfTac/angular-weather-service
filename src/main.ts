@@ -47,14 +47,14 @@ if (environment.production) {
 platformBrowserDynamic().bootstrapModule(AppModule)
   .catch(err => console.error(err));
 
-const accentBase = parseColorHexRGB('#6476F6')!;
+const accentBase = parseColorHexRGB('#375d76')!;
 accentPalette.withDefault(
   PaletteRGB.from(
     SwatchRGB.create(accentBase.r, accentBase.g, accentBase.b)
   )
 );
 
-const neutralBase = parseColorHexRGB('#121331')!;
+const neutralBase = parseColorHexRGB('#fafafb')!;
 neutralPalette.withDefault(
   PaletteRGB.from(
     SwatchRGB.create(neutralBase.r, neutralBase.g, neutralBase.b)
@@ -82,8 +82,8 @@ typeRampPlus5LineHeight.withDefault('calc(56px * var(--type-ramp-multiplier))');
 typeRampPlus6FontSize.withDefault('calc(60px * var(--type-ramp-multiplier))');
 typeRampPlus6LineHeight.withDefault('calc(70px * var(--type-ramp-multiplier))');
 
-export const cardMaxWidth = DesignToken.create<string>('card-max-width').withDefault('250px');
-export const cardHeight = DesignToken.create<string>('card-height').withDefault('450px');
+export const cardMaxWidth = DesignToken.create<string>('card-max-width').withDefault('280px');
+export const cardHeight = DesignToken.create<string>('card-height').withDefault('480px');
 export const heightNumber = DesignToken.create<number>('height-number').withDefault(
   (target) => 
     (baseHeightMultiplier.getValueFor(target) +
@@ -95,7 +95,7 @@ export const iconHeightMultiplier = DesignToken.create<number>('icon-height-mult
 
 bodyFont.withDefault('"Rubik", sans-serif')
 controlCornerRadius.withDefault(22);
-baseLayerLuminance.withDefault(StandardLuminance.LightMode);
+baseLayerLuminance.withDefault(StandardLuminance.DarkMode);
 
 DesignSystem
   .getOrCreate()

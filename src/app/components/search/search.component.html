@@ -1,1 +1,37 @@
-<neutron-search #searchbar placeholder="search for location"></neutron-search>
+<neutron-search
+	[(ngModel)]='searchText'
+	ngDefaultControl
+	(change)='handleSearch()'
+	id="searchbar"
+	appearance="outline"
+	list="results-list"
+	placeholder="search"
+>
+	<app-icon slot="start" name="app.locationGlobe.regular" size="plus-3"></app-icon>
+	<neutron-button (click)='handleSearch()' slot="end" appearance="accent" current-value>
+		<app-icon name="app.search.regular" size="plus-2"></app-icon>
+	</neutron-button>
+</neutron-search>
+<neutron-anchored-region
+	*ngIf='searchResults.length > 0'
+	class="listbox-wrapper {{searchResults.length > 0 ? 'visible' : ''}}"
+	anchor="searchbar"
+	fixed-placement="true"
+	vertical-positioning-mode="locktodefault"
+	vertical-default-position="bottom"
+	vertical-scaling="content"
+	horizontal-positioning-mode="locktodefault"
+	horizontal-default-position="center"
+	horizontal-scaling="anchor"
+	horizontal-inset="true"
+	auto-update-mode="auto"
+>
+	<neutron-listbox #resultsList id="results-list">
+		<ng-container *ngFor='let location of searchResults'>
+			<neutron-option [ngValue]="location">
+				<span>{{location.name}},&nbsp;</span>
+				<span slot="end">{{location.region}}</span>
+			</neutron-option>
+		</ng-container>
+	</neutron-listbox>
+</neutron-anchored-region>

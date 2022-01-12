@@ -1,10 +1,8 @@
-import { Component, ElementRef, Injector, Input, OnInit, ViewChild } from '@angular/core';
-import { parseColorHexRGB } from '@microsoft/fast-colors';
-import { baseLayerLuminance, fillColor, neutralFillLayerRecipe, neutralForegroundRecipe, neutralForegroundRest, neutralLayer1, neutralLayerCardContainer, neutralPalette, PaletteRGB, StandardLuminance, Swatch, SwatchRGB } from '@microsoft/fast-components';
-import { composedParent, DesignSystem, DesignToken } from '@microsoft/fast-foundation';
+import { Component, ElementRef, Input, OnInit, } from '@angular/core';
+import { baseLayerLuminance, StandardLuminance } from '@microsoft/fast-components';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
-import { AppState, CurrentConditions, Location, LocationItem } from '../../store';
+import { DateTime } from 'luxon';
+import { AppState } from '../../store';
 
 enum DayNightCycle {
 	SUNRISE = 'sunrise',
@@ -20,39 +18,53 @@ enum DayNightCycle {
 })
 export class WeatherOverlayComponent implements OnInit {
 	public cardRef: HTMLElement;
-	private DS: DesignSystem;
+	private night: DateTime;
+	private nightEnd: DateTime;
 
 	@Input()
-	public timeOfDay: string;
+	public localTime: string;
+	private localDateTime: DateTime;
+	@Input() 
+	public sunrise: string;
+	private sunriseDateTime: DateTime;
+	@Input()
+	public sunset: string;
+	private sunsetDateTime: DateTime;
+	@Input()
+	public timezone: string;
+	@Input()
+	public forecastDate: string;
 
-	public weatherConditions: {} = {
-		clouds: false,
-		lightning: false,
-		rain: false,
-		snow: false,
-		wind: false
-	}
+	private timesInitialized: boolean = false;
+	public timeOfDay: DayNightCycle | string = DayNightCycle.DAY;
 
-	private randRange(min: number, max: number, round: boolean = false) {
-		const value = Math.random() * (max - min) + min;
-		return round ? Math.floor(value) : value;
-	}
-
-	private spawnedClouds: boolean = false;
-	private windSpeed: number = 0;
-	private windDirection: number = 120;
-	public dayNightCycle: DayNightCycle | string = DayNightCycle.DAY;
-	private rainColor: string = 'rgba(100% 100% 100% / 0.4)';
-	private snowColor: string = '';
-
-	public setDayNightState(state: DayNightCycle | string) {
-		this.dayNightCycle = state;
-
-		if (state === 'night' || state === 'sunset') {
-			baseLayerLuminance.setValueFor(this.cardRef, StandardLuminance.DarkMode);
+	public setTimeOfDay() {
+		const timeParts = this.localTime.split(' ');
+		if (/^[0-9]:/.test(timeParts[1])) {
+			timeParts[1] = timeParts[1].replace(timeParts[1], `0${timeParts[1]}`);
 		}
-		if (state === 'day' || state === 'sunrise') {
+
+		this.localTime = timeParts.join('T');
+		this.localDateTime = DateTime.fromISO(this.localTime, { zone: this.timezone });
+		this.sunriseDateTime = DateTime.fromFormat(`${this.forecastDate} ${this.sunrise}`, 'yyyy-MM-dd hh:mm a', { zone: this.timezone });
+		this.sunsetDateTime = DateTime.fromFormat(`${this.forecastDate} ${this.sunset}`, 'yyyy-MM-dd hh:mm a', { zone: this.timezone });
+
+		// Just going to assume sunrise/sunset lasts about 2 hours.
+		this.night = this.sunsetDateTime.plus({ hours: 2 }).setZone(this.timezone);
+		this.nightEnd = this.sunriseDateTime.minus({ hours: 2 }).setZone(this.timezone);
+
+		if ((this.localDateTime >= this.nightEnd && this.localDateTime <= this.sunriseDateTime) && this.timeOfDay !== 'sunrise') {
+			this.timeOfDay = 'sunrise';
 			baseLayerLuminance.setValueFor(this.cardRef, StandardLuminance.LightMode);
+		} else if ((this.localDateTime >= this.sunriseDateTime && this.localDateTime < this.sunsetDateTime) && this.timeOfDay !== 'day') {
+			this.timeOfDay = 'day';
+			baseLayerLuminance.setValueFor(this.cardRef, StandardLuminance.LightMode);
+		} else if ((this.localDateTime >= this.sunsetDateTime && this.localDateTime < this.night) && this.timeOfDay !== 'sunset') {
+			this.timeOfDay = 'sunset';
+			baseLayerLuminance.setValueFor(this.cardRef, StandardLuminance.DarkMode);
+		} else if ((this.localDateTime <= this.nightEnd || this.localDateTime >= this.night) && this.timeOfDay !== 'night') {
+			this.timeOfDay = 'night';
+			baseLayerLuminance.setValueFor(this.cardRef, StandardLuminance.DarkMode);
 		}
 	}
 
@@ -61,6 +73,11 @@ export class WeatherOverlayComponent implements OnInit {
 	}
 
 	ngOnInit(): void {
-		this.setDayNightState(this.timeOfDay);
+		this.setTimeOfDay();
+
+		const effectTimer = setInterval(() => {
+			this.localDateTime.plus({ minutes: 1});
+			this.setTimeOfDay();
+		}, 60000);
 	}
 }

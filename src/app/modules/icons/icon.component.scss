@@ -1,6 +1,8 @@
 :host::ng-deep {
-	display: inline-block;
+	display: flex;
 	position: relative;
+	align-self: center;
+	justify-self: center;
 
 	.i-close:before {
 		transform: rotate(-45deg);
