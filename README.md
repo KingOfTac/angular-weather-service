@@ -22,3 +22,4 @@ Weather app built with Angular, ngrx, and web components.
 - Ability to maintain user's saved locations between sessions.
 - Add tests using Playwright, and running on a Github CI pipeline.
 - Fix mobile support and better testing across mobile platforms.
+- More weather effects for location cards.
