@@ -1,5 +1,5 @@
 # WeatherService
-Weather app built with Angular & ngrx
+Weather app built with Angular, ngrx, and web components.
 
 [Demo](https://elated-lichterman-a7fcb3.netlify.app/)
 
